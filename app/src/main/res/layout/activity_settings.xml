@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F7F6">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Réglages"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#102A22"
+            android:paddingBottom="18dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Mises à jour"
+            android:textSize="21sp"
+            android:textStyle="bold"
+            android:textColor="#102A22"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:id="@+id/versionText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textColor="#48635A"
+            android:paddingBottom="12dp" />
+
+        <Button
+            android:id="@+id/checkUpdateButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rechercher une mise à jour"
+            android:textAllCaps="false" />
+
+        <TextView
+            android:id="@+id/updateStatusText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aucune vérification effectuée."
+            android:textSize="15sp"
+            android:textColor="#48635A"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp" />
+
+        <Button
+            android:id="@+id/openUpdateButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Télécharger la mise à jour"
+            android:textAllCaps="false"
+            android:visibility="gone" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Les données locales sont conservées lors d'une mise à jour installée par-dessus l'application, à condition que l'APK utilise le même package et la même signature."
+            android:textSize="14sp"
+            android:textColor="#5D6D67"
+            android:paddingTop="20dp" />
+
+    </LinearLayout>
+</ScrollView>
