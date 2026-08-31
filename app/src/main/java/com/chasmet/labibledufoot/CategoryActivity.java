@@ -1,6 +1,7 @@
 package com.chasmet.labibledufoot;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -10,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import java.util.List;
 
 public class CategoryActivity extends Activity {
 
@@ -55,6 +58,7 @@ public class CategoryActivity extends Activity {
         String niveau = enfant ? "Enfant" : "Adulte";
         addInfoCard("Niveau", niveau + " • progression adaptée • priorité à la qualité d'exécution");
         addInfoCard("Objectif", objectiveForCategory(category, enfant));
+        addTechniqueGuides();
 
         if (category.equals("Technique")) {
             addExercise("Conduite + changement de direction", enfant ? "12 min" : "15 min", "Ballon • 6 plots",
@@ -116,6 +120,32 @@ public class CategoryActivity extends Activity {
         addInfoCard("Points clés", enfant
                 ? "Expliquer simplement • corriger sans surcharger • garder du plaisir • arrêter si douleur."
                 : "Qualité avant volume • récupération suffisante • progression graduelle • arrêter si douleur inhabituelle.");
+    }
+
+    private void addTechniqueGuides() {
+        List<TechniqueGuide> guides = TechniqueGuide.forCategory(category);
+        if (guides.isEmpty()) return;
+
+        TextView heading = textView("Fiches techniques illustrées", 21, Color.parseColor("#102A22"), true);
+        heading.setPadding(0, dp(8), 0, dp(10));
+        contentContainer.addView(heading);
+
+        for (TechniqueGuide guide : guides) {
+            LinearLayout card = baseCard();
+            TextView title = textView(guide.title + "  ›", 18, Color.parseColor("#E0BE65"), true);
+            TextView desc = textView("Schéma SVG • position du corps • mémos enfant/adulte", 13, Color.parseColor("#C8D9D2"), false);
+            desc.setPadding(0, dp(5), 0, 0);
+            card.addView(title);
+            card.addView(desc);
+            card.setClickable(true);
+            card.setFocusable(true);
+            card.setOnClickListener(v -> {
+                Intent intent = new Intent(this, TechniqueDetailActivity.class);
+                intent.putExtra(TechniqueDetailActivity.EXTRA_GUIDE_ID, guide.id);
+                startActivity(intent);
+            });
+            contentContainer.addView(card);
+        }
     }
 
     private void addInfoCard(String title, String text) {
