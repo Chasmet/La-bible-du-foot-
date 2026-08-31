@@ -1,13 +1,17 @@
-name: Build APK
+name: Build and Release APK
 
 on:
   push:
     branches: [ "main" ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  build:
+  build-release:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,12 +25,61 @@ jobs:
       - name: Permission Gradle
         run: chmod +x gradlew
 
-      - name: Build Debug APK
-        run: ./gradlew assembleDebug --stacktrace
+      - name: Decode stable signing key
+        run: |
+          mkdir -p "$RUNNER_TEMP/labible-signing"
+          base64 -d signing/release-keystore.b64 > "$RUNNER_TEMP/labible-signing/release-keystore.jks"
 
-      - name: Upload APK
+      - name: Build signed Release APK
+        env:
+          BIBLE_FOOT_KEYSTORE: ${{ runner.temp }}/labible-signing/release-keystore.jks
+          BIBLE_FOOT_STORE_PASSWORD: LbF-2026-Release-Key!7pQ
+          BIBLE_FOOT_KEY_ALIAS: labiblefoot
+          BIBLE_FOOT_KEY_PASSWORD: LbF-2026-Release-Key!7pQ
+        run: ./gradlew assembleRelease --stacktrace
+
+      - name: Read app version
+        id: version
+        shell: bash
+        run: |
+          VERSION_NAME=$(grep -E "versionName[[:space:]]+'" app/build.gradle | head -1 | sed -E "s/.*versionName[[:space:]]+'([^']+)'.*/\1/")
+          if [ -z "$VERSION_NAME" ]; then
+            echo "Version introuvable"
+            exit 1
+          fi
+          echo "version=$VERSION_NAME" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION_NAME" >> "$GITHUB_OUTPUT"
+
+      - name: Prepare APK
+        shell: bash
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/release/app-release.apk "dist/La-Bible-du-Foot-v${{ steps.version.outputs.version }}.apk"
+          sha256sum "dist/La-Bible-du-Foot-v${{ steps.version.outputs.version }}.apk" > "dist/La-Bible-du-Foot-v${{ steps.version.outputs.version }}.apk.sha256"
+
+      - name: Upload GitHub Actions artifact
         uses: actions/upload-artifact@v4
         with:
-          name: La-Bible-du-Foot-debug
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: La-Bible-du-Foot-v${{ steps.version.outputs.version }}
+          path: |
+            dist/La-Bible-du-Foot-v${{ steps.version.outputs.version }}.apk
+            dist/La-Bible-du-Foot-v${{ steps.version.outputs.version }}.apk.sha256
           if-no-files-found: error
+
+      - name: Publish or update GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          APK="dist/La-Bible-du-Foot-v${VERSION}.apk"
+          HASH="dist/La-Bible-du-Foot-v${VERSION}.apk.sha256"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release upload "$TAG" "$APK" "$HASH" --clobber
+          else
+            gh release create "$TAG" "$APK" "$HASH" \
+              --target "${GITHUB_SHA}" \
+              --title "La Bible du Foot v${VERSION}" \
+              --notes "Mise à jour officielle de La Bible du Foot. APK Android signé de façon stable pour permettre les mises à jour par-dessus l'application sans effacer les données."
+          fi
