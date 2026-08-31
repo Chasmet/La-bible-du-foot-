@@ -47,7 +47,7 @@
             android:id="@+id/updateStatusText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Aucune vérification effectuée."
+            android:text="Vérification automatique en cours…"
             android:textSize="15sp"
             android:textColor="#48635A"
             android:paddingTop="14dp"
@@ -57,14 +57,14 @@
             android:id="@+id/openUpdateButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Télécharger la mise à jour"
+            android:text="Télécharger et installer"
             android:textAllCaps="false"
             android:visibility="gone" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Les données locales sont conservées lors d'une mise à jour installée par-dessus l'application, à condition que l'APK utilise le même package et la même signature."
+            android:text="Les nouvelles versions sont téléchargées directement depuis la Release GitHub officielle. Android demandera uniquement de confirmer l'installation. Les prochaines mises à jour conservent les données grâce au même package et à une signature stable."
             android:textSize="14sp"
             android:textColor="#5D6D67"
             android:paddingTop="20dp" />
