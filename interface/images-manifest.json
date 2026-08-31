@@ -1,0 +1,53 @@
+{
+  "branding": [
+    "logo_app.png",
+    "splash_screen.png",
+    "header_accueil.png"
+  ],
+  "rubriques": [
+    "rubrique_technique.png",
+    "rubrique_tactique.png",
+    "rubrique_defense.png",
+    "rubrique_milieu.png",
+    "rubrique_attaque.png",
+    "rubrique_gardien.png",
+    "rubrique_vitesse.png",
+    "rubrique_endurance.png",
+    "rubrique_explosivite.png",
+    "rubrique_preparation_physique.png",
+    "rubrique_recuperation.png",
+    "rubrique_prevention_blessures.png",
+    "rubrique_seance_individuelle.png",
+    "rubrique_seance_collective.png",
+    "rubrique_echauffement.png",
+    "rubrique_tests_progression.png",
+    "rubrique_createur_seance.png",
+    "rubrique_favoris.png",
+    "rubrique_historique.png",
+    "rubrique_reglages.png"
+  ],
+  "postes": [
+    "poste_defenseur_central.png",
+    "poste_lateral.png",
+    "poste_milieu_defensif.png",
+    "poste_milieu_relayeur.png",
+    "poste_milieu_offensif.png",
+    "poste_ailier.png",
+    "poste_avant_centre.png",
+    "poste_gardien.png"
+  ],
+  "niveaux": [
+    "niveau_enfant.png",
+    "niveau_adulte.png"
+  ],
+  "tactiques": [
+    "tactique_433.png",
+    "tactique_4231.png",
+    "tactique_bloc_bas.png",
+    "tactique_bloc_median.png",
+    "tactique_pressing_haut.png",
+    "tactique_construction_arriere.png",
+    "tactique_transition_offensive.png",
+    "tactique_transition_defensive.png"
+  ]
+}
